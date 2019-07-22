@@ -19,17 +19,17 @@ class ListOfBooksVC: UIViewController {
     
     self.title = "Bienvenido a la biblioteca Ualá"
     
-    let moreButton = UIBarButtonItem(title: "More", style: .plain, target: self, action: #selector(onMoreTap))
-    self.navigationItem.rightBarButtonItem = moreButton
+    let sortButton = UIBarButtonItem(title: "Sort", style: .plain, target: self, action: #selector(onSortTap))
+    self.navigationItem.rightBarButtonItem = sortButton
   }
   
-  @objc fileprivate func onMoreTap() {
-    let mostPopularAction = UIAlertAction(title: "Most popular at top" + (self.books.mode == .mostPopularAtTop ? " ✔︎" : ""), style: .default, handler: { (action) in
-      self.books.setMode(.mostPopularAtTop)
+  @objc fileprivate func onSortTap() {
+    let mostPopularAction = UIAlertAction(title: "Most popular at top" + (self.books.sortMode == .mostPopularAtTop ? " ✔︎" : ""), style: .default, handler: { (action) in
+      self.books.setSortMode(.mostPopularAtTop)
       self.tableView.reloadData()
     })
-    let lessPopularAction = UIAlertAction(title: "Less popular at top" + (self.books.mode == .leastPopularAtTop ? " ✔︎" : ""), style: .default, handler: { (action) in
-      self.books.setMode(.leastPopularAtTop)
+    let lessPopularAction = UIAlertAction(title: "Less popular at top" + (self.books.sortMode == .leastPopularAtTop ? " ✔︎" : ""), style: .default, handler: { (action) in
+      self.books.setSortMode(.leastPopularAtTop)
       self.tableView.reloadData()
     })
     let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
