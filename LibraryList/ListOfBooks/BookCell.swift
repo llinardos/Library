@@ -14,6 +14,8 @@ class BookCell: UITableViewCell {
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
+    self.selectionStyle = .none
+    
     let labels = [line1, line2, line3, line4]
     labels.forEach({ label in
       label.numberOfLines = 0

@@ -26,6 +26,8 @@ class ListOfBooksVC: UIViewController {
     tableView.delegate = self
     tableView.dataSource = self
     
+    tableView.separatorInset = .zero
+    
     view.addSubview(tableView)
     Layout().allign(.all, of: tableView, and: view)
     
