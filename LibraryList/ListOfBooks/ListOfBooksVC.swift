@@ -45,6 +45,10 @@ class ListOfBooksVC: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
+    if books.hasContent() {
+      return
+    }
+    
     self.reloadBooks()
   }
   

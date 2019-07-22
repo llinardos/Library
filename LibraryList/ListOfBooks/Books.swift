@@ -34,5 +34,9 @@ class Books {
   func getBooks() -> [Book] {
     return processedBooks
   }
+  
+  func hasContent() -> Bool {
+    return allBooks.count > 0
+  }
 }
 
