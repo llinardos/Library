@@ -1,15 +1,16 @@
 class Books {
   enum Mode {
-    case byPopularity
+    case mostPopularAtTop
+    case leastPopularAtTop
   }
   
-  private var mode: Mode
+  private(set) var mode: Mode
   private var allBooks: [Book]
   private var processedBooks: [Book] = []
   
   init(_ books: [Book] = []) {
     self.allBooks = books
-    self.mode = .byPopularity
+    self.mode = .mostPopularAtTop
     self.processBooks()
   }
   
@@ -20,9 +21,13 @@ class Books {
   
   private func processBooks() {
     switch mode {
-    case .byPopularity:
+    case .mostPopularAtTop:
       self.processedBooks = allBooks.sorted(by: { (book1, book2) -> Bool in
         book1.popularity > book2.popularity
+      })
+    case .leastPopularAtTop:
+      self.processedBooks = allBooks.sorted(by: { (book1, book2) -> Bool in
+        book1.popularity < book2.popularity
       })
     }
   }

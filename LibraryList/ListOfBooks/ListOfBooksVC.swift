@@ -18,6 +18,27 @@ class ListOfBooksVC: UIViewController {
     super.init(nibName: nil, bundle: nil)
     
     self.title = "Bienvenido a la biblioteca Ualá"
+    
+    let moreButton = UIBarButtonItem(title: "More", style: .plain, target: self, action: #selector(onMoreTap))
+    self.navigationItem.rightBarButtonItem = moreButton
+  }
+  
+  @objc fileprivate func onMoreTap() {
+    let mostPopularAction = UIAlertAction(title: "Most popular at top" + (self.books.mode == .mostPopularAtTop ? " ✔︎" : ""), style: .default, handler: { (action) in
+      self.books.setMode(.mostPopularAtTop)
+      self.tableView.reloadData()
+    })
+    let lessPopularAction = UIAlertAction(title: "Less popular at top" + (self.books.mode == .leastPopularAtTop ? " ✔︎" : ""), style: .default, handler: { (action) in
+      self.books.setMode(.leastPopularAtTop)
+      self.tableView.reloadData()
+    })
+    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+    
+    let optionsAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+    optionsAlertController.addAction(mostPopularAction)
+    optionsAlertController.addAction(lessPopularAction)
+    optionsAlertController.addAction(cancelAction)
+    self.present(optionsAlertController, animated: true, completion: nil)
   }
   
   required init?(coder aDecoder: NSCoder) { return nil }
