@@ -10,6 +10,8 @@ class ListOfBooksVC: UIViewController {
   private var getBooks: GetBooks.Service
   private var books = Books()
   
+  var didSelectBook: (Book) -> Void = { _ in }
+  
   init(_ getBooks: GetBooks.Service) {
     self.getBooks = getBooks
     
@@ -99,5 +101,10 @@ extension ListOfBooksVC: UITableViewDelegate, UITableViewDataSource {
     let book = self.books.getBooks()[indexPath.row]
     cell.setup(book)
     return cell
+  }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let book = self.books.getBooks()[indexPath.row]
+    didSelectBook(book)
   }
 }
