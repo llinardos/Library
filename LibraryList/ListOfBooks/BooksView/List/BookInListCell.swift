@@ -2,8 +2,8 @@ import UIKit
 import Layout
 import SDWebImage
 
-class BookCell: UITableViewCell {
-  private static var reuseId: String { return String(describing: BookCell.self) }
+class BookInListCell: UITableViewCell {
+  private static var reuseId: String { return String(describing: BookInListCell.self) }
   
   private var photoView = PhotoView(size: 66)
   private var line1 = UILabel()
@@ -49,12 +49,12 @@ class BookCell: UITableViewCell {
   }
 }
 
-extension BookCell {
+extension BookInListCell {
   static func register(on tableView: UITableView) {
-    tableView.register(BookCell.self, forCellReuseIdentifier: BookCell.reuseId)
+    tableView.register(BookInListCell.self, forCellReuseIdentifier: BookInListCell.reuseId)
   }
-  static func dequeueCell(from tableView: UITableView) -> BookCell {
-    return tableView.dequeueReusableCell(withIdentifier: BookCell.reuseId) as! BookCell
+  static func dequeueCell(from tableView: UITableView) -> BookInListCell {
+    return tableView.dequeueReusableCell(withIdentifier: BookInListCell.reuseId) as! BookInListCell
   }
 
 }

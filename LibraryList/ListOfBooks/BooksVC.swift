@@ -3,7 +3,7 @@ import Layout
 import Async
 
 class BooksVC: UIViewController {
-  private lazy var listView = ListOfBooksView(books: books)
+  private lazy var booksView = BooksView(books: self.books, mode: .grid)
   private var loadingView = LoadingView()
   private var errorView = ErrorView()
   
@@ -39,8 +39,8 @@ class BooksVC: UIViewController {
   override func loadView() {
     super.loadView()
     
-    view.addSubview(listView)
-    Layout().allign(.all, of: listView, and: view)
+    view.addSubview(booksView)
+    Layout().allign(.all, of: booksView, and: view)
     
     view.addSubview(loadingView)
     Layout().allign(.all, of: loadingView, and: view)
@@ -50,11 +50,11 @@ class BooksVC: UIViewController {
     
     sortByPopularity.didSelectMode = { [unowned self] _ in
       self.books.refresh()
-      self.listView.refresh()
+      self.booksView.refresh()
     }
     filterByAvailability.didSelectFilter = { [unowned self] _ in
       self.books.refresh()
-      self.listView.refresh()
+      self.booksView.refresh()
     }
   }
   
@@ -89,75 +89,24 @@ class BooksVC: UIViewController {
   
   private func showLoading() {
     self.loadingView.isHidden = false
-    self.listView.isHidden = true
+    self.booksView.isHidden = true
     self.errorView.isHidden = true
   }
   
   private func showList() {
     self.loadingView.isHidden = true
-    self.listView.isHidden = false
+    self.booksView.isHidden = false
     self.errorView.isHidden = true
-    self.listView.refresh()
+    self.booksView.refresh()
   }
   
   private func showError(_ error: ErrorView.ErrorType) {
     self.loadingView.isHidden = true
-    self.listView.isHidden = true
+    self.booksView.isHidden = true
     self.errorView.isHidden = false
     self.errorView.showError(error)
     self.errorView.onRetryCallback = { [unowned self] in
       self.reloadBooks()
     }
-  }
-}
-
-protocol BooksShower {
-  var books: Books { set get }
-  var didSelectBook: (Book) -> Void { set get }
-  func refresh()
-}
-
-class ListOfBooksView: UIView, BooksShower, UITableViewDelegate, UITableViewDataSource {
-  private var tableView = UITableView()
-  internal var books: Books
-  
-  init(books: Books) {
-    self.books = books
-    
-    super.init(frame: .zero)
-    
-    addSubview(tableView)
-    Layout().allign(.all, of: tableView, and: self)
-    
-    tableView.delegate = self
-    tableView.dataSource = self
-    
-    tableView.separatorInset = .zero
-    
-    BookCell.register(on: tableView)
-  }
-  
-  required init?(coder aDecoder: NSCoder) { return nil }
-  
-  var didSelectBook: (Book) -> Void = { _ in }
-  
-  func refresh() {
-    self.tableView.reloadData()
-  }
-
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.books.getBooks().count
-  }
-  
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = BookCell.dequeueCell(from: tableView)
-    let book = self.books.getBooks()[indexPath.row]
-    cell.setup(book)
-    return cell
-  }
-  
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let book = self.books.getBooks()[indexPath.row]
-    didSelectBook(book)
   }
 }
