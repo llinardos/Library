@@ -22,7 +22,7 @@
 		ACD98D2422E5F09000FF6777 /* LibraryList.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACD98D1D22E5F09000FF6777 /* LibraryList.framework */; };
 		ACD98D2522E5F09000FF6777 /* LibraryList.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ACD98D1D22E5F09000FF6777 /* LibraryList.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		ACD98D2A22E5F09900FF6777 /* LibraryList.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACD98D2922E5F09900FF6777 /* LibraryList.swift */; };
-		ACD98D2D22E5F0ED00FF6777 /* ListOfBooksVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACD98D2C22E5F0ED00FF6777 /* ListOfBooksVC.swift */; };
+		ACD98D2D22E5F0ED00FF6777 /* BooksVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACD98D2C22E5F0ED00FF6777 /* BooksVC.swift */; };
 		ACD98D3922E5F23A00FF6777 /* Networking.h in Headers */ = {isa = PBXBuildFile; fileRef = ACD98D3722E5F23A00FF6777 /* Networking.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		ACD98D4622E5F25400FF6777 /* Layout.h in Headers */ = {isa = PBXBuildFile; fileRef = ACD98D4422E5F25400FF6777 /* Layout.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		ACD98D6222E5F29300FF6777 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACD98D5B22E5F29300FF6777 /* Server.swift */; };
@@ -127,7 +127,7 @@
 		ACD98D1F22E5F09000FF6777 /* LibraryList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryList.h; sourceTree = "<group>"; };
 		ACD98D2022E5F09000FF6777 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ACD98D2922E5F09900FF6777 /* LibraryList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryList.swift; sourceTree = "<group>"; };
-		ACD98D2C22E5F0ED00FF6777 /* ListOfBooksVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListOfBooksVC.swift; sourceTree = "<group>"; };
+		ACD98D2C22E5F0ED00FF6777 /* BooksVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooksVC.swift; sourceTree = "<group>"; };
 		ACD98D3522E5F23A00FF6777 /* Networking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Networking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACD98D3722E5F23A00FF6777 /* Networking.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Networking.h; sourceTree = "<group>"; };
 		ACD98D3822E5F23A00FF6777 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -273,7 +273,7 @@
 		ACD98D2B22E5F0E300FF6777 /* ListOfBooks */ = {
 			isa = PBXGroup;
 			children = (
-				ACD98D2C22E5F0ED00FF6777 /* ListOfBooksVC.swift */,
+				ACD98D2C22E5F0ED00FF6777 /* BooksVC.swift */,
 				AC8E4D3322E6833B001550BE /* SortByPopularity.swift */,
 				AC8E4D3522E686A0001550BE /* FilterByAvailability.swift */,
 				AC8E4D2622E603AC001550BE /* BookCell.swift */,
@@ -575,7 +575,7 @@
 			files = (
 				AC8E4D3622E686A0001550BE /* FilterByAvailability.swift in Sources */,
 				AC8E4D2722E603AC001550BE /* BookCell.swift in Sources */,
-				ACD98D2D22E5F0ED00FF6777 /* ListOfBooksVC.swift in Sources */,
+				ACD98D2D22E5F0ED00FF6777 /* BooksVC.swift in Sources */,
 				ACD98D2A22E5F09900FF6777 /* LibraryList.swift in Sources */,
 				AC8E4D3222E60F04001550BE /* PhotoView.swift in Sources */,
 				AC8E4D2922E603BC001550BE /* Books.swift in Sources */,

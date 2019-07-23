@@ -2,8 +2,8 @@ import UIKit
 import Layout
 import Async
 
-class ListOfBooksVC: UIViewController {
-  private var tableView = UITableView()
+class BooksVC: UIViewController {
+  private lazy var listView = ListOfBooksView(books: books)
   private var loadingView = LoadingView()
   private var errorView = ErrorView()
   
@@ -39,13 +39,8 @@ class ListOfBooksVC: UIViewController {
   override func loadView() {
     super.loadView()
     
-    tableView.delegate = self
-    tableView.dataSource = self
-    
-    tableView.separatorInset = .zero
-    
-    view.addSubview(tableView)
-    Layout().allign(.all, of: tableView, and: view)
+    view.addSubview(listView)
+    Layout().allign(.all, of: listView, and: view)
     
     view.addSubview(loadingView)
     Layout().allign(.all, of: loadingView, and: view)
@@ -53,15 +48,13 @@ class ListOfBooksVC: UIViewController {
     view.addSubview(errorView)
     Layout().allign(.all, of: errorView, and: view)
     
-    BookCell.register(on: tableView)
-    
     sortByPopularity.didSelectMode = { [unowned self] _ in
       self.books.refresh()
-      self.tableView.reloadData()
+      self.listView.refresh()
     }
     filterByAvailability.didSelectFilter = { [unowned self] _ in
       self.books.refresh()
-      self.tableView.reloadData()
+      self.listView.refresh()
     }
   }
   
@@ -96,20 +89,20 @@ class ListOfBooksVC: UIViewController {
   
   private func showLoading() {
     self.loadingView.isHidden = false
-    self.tableView.isHidden = true
+    self.listView.isHidden = true
     self.errorView.isHidden = true
   }
   
   private func showList() {
     self.loadingView.isHidden = true
-    self.tableView.isHidden = false
+    self.listView.isHidden = false
     self.errorView.isHidden = true
-    self.tableView.reloadData()
+    self.listView.refresh()
   }
   
   private func showError(_ error: ErrorView.ErrorType) {
     self.loadingView.isHidden = true
-    self.tableView.isHidden = true
+    self.listView.isHidden = true
     self.errorView.isHidden = false
     self.errorView.showError(error)
     self.errorView.onRetryCallback = { [unowned self] in
@@ -118,7 +111,40 @@ class ListOfBooksVC: UIViewController {
   }
 }
 
-extension ListOfBooksVC: UITableViewDelegate, UITableViewDataSource {
+protocol BooksShower {
+  var books: Books { set get }
+  var didSelectBook: (Book) -> Void { set get }
+  func refresh()
+}
+
+class ListOfBooksView: UIView, BooksShower, UITableViewDelegate, UITableViewDataSource {
+  private var tableView = UITableView()
+  internal var books: Books
+  
+  init(books: Books) {
+    self.books = books
+    
+    super.init(frame: .zero)
+    
+    addSubview(tableView)
+    Layout().allign(.all, of: tableView, and: self)
+    
+    tableView.delegate = self
+    tableView.dataSource = self
+    
+    tableView.separatorInset = .zero
+    
+    BookCell.register(on: tableView)
+  }
+  
+  required init?(coder aDecoder: NSCoder) { return nil }
+  
+  var didSelectBook: (Book) -> Void = { _ in }
+  
+  func refresh() {
+    self.tableView.reloadData()
+  }
+
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return self.books.getBooks().count
   }

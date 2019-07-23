@@ -3,7 +3,7 @@ import Networking
 
 public class LibraryList {
   private var navController = UINavigationController()
-  private var listVC: ListOfBooksVC?
+  private var listVC: BooksVC?
   private var detailVC: BookDetailVC?
   
   private lazy var server = AlamofireWebServer(serverURL: "https://qodyhvpf8b.execute-api.us-east-1.amazonaws.com")
@@ -17,7 +17,7 @@ public class LibraryList {
   }
   
   func presentListOfBook() {
-    let listOfBooksVC = ListOfBooksVC(getBooks)
+    let listOfBooksVC = BooksVC(getBooks)
     self.listVC = listOfBooksVC
     
     listOfBooksVC.didSelectBook = { [unowned self] book in
