@@ -9,7 +9,11 @@ class ListOfBooksVC: UIViewController {
   
   private var getBooks: GetBooks.Service
   private lazy var sortByPopularity = SortByPopularity(.mostPopularAtTop)
-  private lazy var books = Books(getSortMode: { [unowned self] in self.sortByPopularity.currentMode })
+  private lazy var filterByAvailability = FilterByAvailability(.showAll)
+  private lazy var books = Books(
+    getSortMode: { [unowned self] in self.sortByPopularity.currentMode },
+    getAvailabilityFilter: { [unowned self] in self.filterByAvailability.currentFilter }
+  )
   
   var didSelectBook: (Book) -> Void = { _ in }
   
@@ -21,11 +25,16 @@ class ListOfBooksVC: UIViewController {
     self.title = "Bienvenido a la biblioteca Ualá"
     
     let sortButton = UIBarButtonItem(title: "Sort", style: .plain, target: self, action: #selector(onSortTap))
-    self.navigationItem.rightBarButtonItem = sortButton
+    let filterButton = UIBarButtonItem(title: "Filter", style: .plain, target: self, action: #selector(onFilterTap))
+    self.navigationItem.rightBarButtonItems = [sortButton, filterButton]
   }
   
   @objc fileprivate func onSortTap() {
     sortByPopularity.presentPicker(over: self)
+  }
+  
+  @objc fileprivate func onFilterTap() {
+    filterByAvailability.presentPicker(over: self)
   }
   
   required init?(coder aDecoder: NSCoder) { return nil }
@@ -51,7 +60,12 @@ class ListOfBooksVC: UIViewController {
     
     sortByPopularity.didSelectMode = { [unowned self] _ in
       self.books.refresh()
-      self.tableView.reloadData() }
+      self.tableView.reloadData()
+    }
+    filterByAvailability.didSelectFilter = { [unowned self] _ in
+      self.books.refresh()
+      self.tableView.reloadData()
+    }
   }
   
   override func viewWillAppear(_ animated: Bool) {

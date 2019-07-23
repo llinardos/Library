@@ -3,24 +3,36 @@ class Books {
   private var processedBooks: [Book] = []
   
   private var getSortMode: () -> SortByPopularity.Mode
+  private var getAvailabilityFilter: () -> FilterByAvailability.Filter
   
-  init(_ books: [Book] = [], getSortMode: @escaping () -> SortByPopularity.Mode) {
+  init(_ books: [Book] = [], getSortMode: @escaping () -> SortByPopularity.Mode, getAvailabilityFilter: @escaping () -> FilterByAvailability.Filter) {
     self.getSortMode = getSortMode
+    self.getAvailabilityFilter = getAvailabilityFilter
     self.allBooks = books
     self.processBooks()
   }
   
   private func processBooks() {
+    var processedBooks = self.allBooks
+    
+    switch getAvailabilityFilter() {
+    case .showAll: break
+    case .showOnlyAvailables: processedBooks = processedBooks.filter { $0.isAvailable }
+    case .showOnlyNotAvailables: processedBooks = processedBooks.filter { !$0.isAvailable }
+    }
+    
     switch getSortMode() {
     case .mostPopularAtTop:
-      self.processedBooks = allBooks.sorted(by: { (book1, book2) -> Bool in
+      processedBooks = processedBooks.sorted(by: { (book1, book2) -> Bool in
         book1.popularity > book2.popularity
       })
     case .leastPopularAtTop:
-      self.processedBooks = allBooks.sorted(by: { (book1, book2) -> Bool in
+      processedBooks = processedBooks.sorted(by: { (book1, book2) -> Bool in
         book1.popularity < book2.popularity
       })
     }
+    
+    self.processedBooks = processedBooks
   }
   
   func updateBooks(_ books: [Book]) {

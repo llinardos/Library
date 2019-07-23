@@ -1,11 +1,3 @@
-//
-//  Sort.swift
-//  LibraryList
-//
-//  Created by Leandro Linardos on 22/07/2019.
-//  Copyright © 2019 Uala. All rights reserved.
-//
-
 import UIKit
 
 class SortByPopularity {
