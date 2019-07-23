@@ -1,26 +1,17 @@
 class Books {
-  enum SortMode {
-    case mostPopularAtTop
-    case leastPopularAtTop
-  }
-  
-  private(set) var sortMode: SortMode
   private var allBooks: [Book]
   private var processedBooks: [Book] = []
   
-  init(_ books: [Book] = []) {
-    self.allBooks = books
-    self.sortMode = .mostPopularAtTop
-    self.processBooks()
-  }
+  private var getSortMode: () -> SortByPopularity.Mode
   
-  func setSortMode(_ mode: SortMode) {
-    self.sortMode = mode
+  init(_ books: [Book] = [], getSortMode: @escaping () -> SortByPopularity.Mode) {
+    self.getSortMode = getSortMode
+    self.allBooks = books
     self.processBooks()
   }
   
   private func processBooks() {
-    switch sortMode {
+    switch getSortMode() {
     case .mostPopularAtTop:
       self.processedBooks = allBooks.sorted(by: { (book1, book2) -> Bool in
         book1.popularity > book2.popularity
@@ -34,6 +25,11 @@ class Books {
   
   func updateBooks(_ books: [Book]) {
     self.allBooks = books
+    self.processBooks()
+  }
+  
+  func refresh() {
+    self.processBooks()
   }
   
   func getBooks() -> [Book] {

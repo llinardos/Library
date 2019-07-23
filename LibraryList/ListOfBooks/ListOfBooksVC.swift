@@ -8,7 +8,8 @@ class ListOfBooksVC: UIViewController {
   private var errorView = ErrorView()
   
   private var getBooks: GetBooks.Service
-  private var books = Books()
+  private lazy var sortByPopularity = SortByPopularity(.mostPopularAtTop)
+  private lazy var books = Books(getSortMode: { [unowned self] in self.sortByPopularity.currentMode })
   
   var didSelectBook: (Book) -> Void = { _ in }
   
@@ -24,21 +25,7 @@ class ListOfBooksVC: UIViewController {
   }
   
   @objc fileprivate func onSortTap() {
-    let mostPopularAction = UIAlertAction(title: "Most popular at top" + (self.books.sortMode == .mostPopularAtTop ? " ✔︎" : ""), style: .default, handler: { (action) in
-      self.books.setSortMode(.mostPopularAtTop)
-      self.tableView.reloadData()
-    })
-    let lessPopularAction = UIAlertAction(title: "Less popular at top" + (self.books.sortMode == .leastPopularAtTop ? " ✔︎" : ""), style: .default, handler: { (action) in
-      self.books.setSortMode(.leastPopularAtTop)
-      self.tableView.reloadData()
-    })
-    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-    
-    let optionsAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-    optionsAlertController.addAction(mostPopularAction)
-    optionsAlertController.addAction(lessPopularAction)
-    optionsAlertController.addAction(cancelAction)
-    self.present(optionsAlertController, animated: true, completion: nil)
+    sortByPopularity.presentPicker(over: self)
   }
   
   required init?(coder aDecoder: NSCoder) { return nil }
@@ -61,6 +48,10 @@ class ListOfBooksVC: UIViewController {
     Layout().allign(.all, of: errorView, and: view)
     
     BookCell.register(on: tableView)
+    
+    sortByPopularity.didSelectMode = { [unowned self] _ in
+      self.books.refresh()
+      self.tableView.reloadData() }
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -81,7 +72,7 @@ class ListOfBooksVC: UIViewController {
     }, thenOnMainDo: { (result) in
       switch result {
       case .success(let books):
-        self.books = Books(books)
+        self.books.updateBooks(books)
         self.showList()
       case .failure(let error):
         switch error {
