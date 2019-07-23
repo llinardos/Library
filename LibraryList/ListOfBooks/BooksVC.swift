@@ -10,6 +10,7 @@ class BooksVC: UIViewController {
   private var getBooks: GetBooks.Service
   private lazy var sortByPopularity = SortByPopularity(.mostPopularAtTop)
   private lazy var filterByAvailability = FilterByAvailability(.showAll)
+  private lazy var selectView = ShowAsGridOrList(.list)
   private lazy var books = Books(getSortMode: sortByPopularity, getAvailabilityFilter: filterByAvailability)
   
   var didSelectBook: (Book) -> Void = { _ in }
@@ -24,6 +25,9 @@ class BooksVC: UIViewController {
     let sortButton = UIBarButtonItem(title: "Sort", style: .plain, target: self, action: #selector(onSortTap))
     let filterButton = UIBarButtonItem(title: "Filter", style: .plain, target: self, action: #selector(onFilterTap))
     self.navigationItem.rightBarButtonItems = [sortButton, filterButton]
+    
+    let viewButton = UIBarButtonItem(title: "View", style: .plain, target: self, action: #selector(onViewTap))
+    self.navigationItem.leftBarButtonItem = viewButton
   }
   
   @objc fileprivate func onSortTap() {
@@ -33,6 +37,11 @@ class BooksVC: UIViewController {
   @objc fileprivate func onFilterTap() {
     filterByAvailability.presentPicker(over: self)
   }
+  
+  @objc fileprivate func onViewTap() {
+    selectView.presentPicker(over: self)
+  }
+
   
   required init?(coder aDecoder: NSCoder) { return nil }
   
@@ -48,6 +57,8 @@ class BooksVC: UIViewController {
     view.addSubview(errorView)
     Layout().allign(.all, of: errorView, and: view)
     
+    self.refreshViewMode()
+    
     sortByPopularity.didSelectMode = { [unowned self] _ in
       self.books.refresh()
       self.booksView.refresh()
@@ -55,6 +66,16 @@ class BooksVC: UIViewController {
     filterByAvailability.didSelectFilter = { [unowned self] _ in
       self.books.refresh()
       self.booksView.refresh()
+    }
+    selectView.didSelectView = { [unowned self] _ in
+      self.refreshViewMode()
+    }
+  }
+  
+  private func refreshViewMode() {
+    switch selectView.currentView {
+    case .grid: self.booksView.setMode(.grid)
+    case .list: self.booksView.setMode(.list)
     }
   }
   
