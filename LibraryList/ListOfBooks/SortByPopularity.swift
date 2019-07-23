@@ -1,6 +1,10 @@
 import UIKit
 
-class SortByPopularity {
+protocol SortByPopularityGet {
+  var currentMode: SortByPopularity.Mode { get }
+}
+
+class SortByPopularity: SortByPopularityGet {
   enum Mode {
     case mostPopularAtTop
     case leastPopularAtTop

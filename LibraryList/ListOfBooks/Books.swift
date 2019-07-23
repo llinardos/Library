@@ -2,10 +2,10 @@ class Books {
   private var allBooks: [Book]
   private var processedBooks: [Book] = []
   
-  private var getSortMode: () -> SortByPopularity.Mode
-  private var getAvailabilityFilter: () -> FilterByAvailability.Filter
+  private var getSortMode: SortByPopularityGet
+  private var getAvailabilityFilter: FilterByAvailabilityGet
   
-  init(_ books: [Book] = [], getSortMode: @escaping () -> SortByPopularity.Mode, getAvailabilityFilter: @escaping () -> FilterByAvailability.Filter) {
+  init(_ books: [Book] = [], getSortMode: SortByPopularityGet, getAvailabilityFilter: FilterByAvailabilityGet) {
     self.getSortMode = getSortMode
     self.getAvailabilityFilter = getAvailabilityFilter
     self.allBooks = books
@@ -15,13 +15,13 @@ class Books {
   private func processBooks() {
     var processedBooks = self.allBooks
     
-    switch getAvailabilityFilter() {
+    switch getAvailabilityFilter.currentFilter {
     case .showAll: break
     case .showOnlyAvailables: processedBooks = processedBooks.filter { $0.isAvailable }
     case .showOnlyNotAvailables: processedBooks = processedBooks.filter { !$0.isAvailable }
     }
     
-    switch getSortMode() {
+    switch getSortMode.currentMode {
     case .mostPopularAtTop:
       processedBooks = processedBooks.sorted(by: { (book1, book2) -> Bool in
         book1.popularity > book2.popularity

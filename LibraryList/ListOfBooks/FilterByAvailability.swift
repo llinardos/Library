@@ -1,6 +1,10 @@
 import UIKit
 
-class FilterByAvailability {
+protocol FilterByAvailabilityGet {
+  var currentFilter: FilterByAvailability.Filter { get }
+}
+
+class FilterByAvailability: FilterByAvailabilityGet {
   enum Filter {
     case showOnlyAvailables
     case showOnlyNotAvailables

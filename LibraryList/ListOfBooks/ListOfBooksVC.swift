@@ -10,10 +10,7 @@ class ListOfBooksVC: UIViewController {
   private var getBooks: GetBooks.Service
   private lazy var sortByPopularity = SortByPopularity(.mostPopularAtTop)
   private lazy var filterByAvailability = FilterByAvailability(.showAll)
-  private lazy var books = Books(
-    getSortMode: { [unowned self] in self.sortByPopularity.currentMode },
-    getAvailabilityFilter: { [unowned self] in self.filterByAvailability.currentFilter }
-  )
+  private lazy var books = Books(getSortMode: sortByPopularity, getAvailabilityFilter: filterByAvailability)
   
   var didSelectBook: (Book) -> Void = { _ in }
   
